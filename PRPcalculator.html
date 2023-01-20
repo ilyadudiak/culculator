@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+</head>
+
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        body {
+            background-color: rgb(50, 0, 85);
+            color: white;
+            font-size: 21px;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            text-align: center;
+        }
+
+        .result {
+            padding-right: 10px;
+        }
+
+        .input {
+            background-color: darkslateblue;
+            color: white;
+            font-size: 21px;
+            border: none;
+            border-radius: 15px;
+            outline: none;
+            height: 30px;
+            padding: 25px 20px;
+        }
+    </style>
+    <p>Рубли</p>
+    <input type="number" class="input">
+    <p>Столько долларов: <br> <span class="result"></span></p>
+
+    <script>
+        let resultPar = document.querySelector(".result");
+        let input = document.querySelector(".input");
+
+
+        let requestURL = 'https://api.exchangerate.host/convert?from=RUB&to=USD&amount=1';
+        let request = new XMLHttpRequest();
+        let result;
+        request.open('GET', requestURL);
+        request.responseType = 'json';
+        request.send();
+
+        request.onload = function () {
+
+            let response = request.response;
+            console.log(response);
+            result = response.result;
+            return result;
+
+        }
+
+        setTimeout(() => console.log(result), 1000);
+
+        function getDollar(rub) {
+            return (result * rub).toFixed(2);
+        }
+
+        input.addEventListener("input", () => {
+            if (input.value == "undefined" || input.value == 0) {
+                resultPar.innerHTML = "-";
+            } else {
+                resultPar.innerHTML = getDollar(input.value);
+            }
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>
